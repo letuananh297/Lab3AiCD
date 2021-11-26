@@ -13,9 +13,9 @@ public:
 	Element_BST* left;
 	Element_BST* right;
 
-	Element_BST(int data, Element_BST* parent) {
-		this->data = data;
-		this->parent = parent;
+	Element_BST() {
+		this->data = 0;
+		this->parent = NULL;
 		this->left = NULL;
 		this->right = NULL;
 	}
@@ -33,8 +33,7 @@ public:
 				return true;
 			else {
 				Element_BST* Node = root;
-				//bool check = 0;
-				while (Node != NULL || Node != NULL) {
+				while (Node != NULL) {
 					if (x > Node->data) {
 						if (Node->right != NULL)
 							Node = Node->right;
@@ -56,14 +55,13 @@ public:
 						break;
 					}
 				}
-				//return check;
 			}
 		}
 	}
 
 	void insert(int x) {
 		if (root == NULL) {
-			Element_BST* Node = new Element_BST(x, NULL);
+			Element_BST* Node = new Element_BST;
 			Node->data = x;
 			root = Node;
 		}
@@ -81,7 +79,11 @@ public:
 					else break;
 				}
 			}
-			Element_BST* newNode = new Element_BST(x, Node);
+			Element_BST* newNode = new Element_BST;
+			newNode->data = x;
+			newNode->parent = Node;
+			newNode->left = NULL;
+			newNode->right = NULL;
 			if (newNode->data > Node->data)
 				Node->right =  newNode;
 			else
@@ -105,7 +107,7 @@ public:
 					break;
 			}
 			if ((Node->left == NULL) && (Node->right == NULL)) {
-				if (Node->data < Node->parent->data) {
+				if (Node->data <= Node->parent->data) {
 					Node->parent->left = NULL;
 					delete Node;
 				}
@@ -139,47 +141,100 @@ public:
 
 	Iterator* create_dft_iterator();
 
-	class ListIterator : public Iterator {
+	Iterator* create_bft_iterator();
+
+	class DFT : public Iterator {
 	public:
-		ListIterator(Element_BST* start);
+		friend class BinarySearhTree;
+		DFT(Element_BST*);
 		bool hasnext() override;
 		int next() override;
 	private:
 		Element_BST* current;
-		Stack* stack = new Stack();
+		Stack<Element_BST*>* stack;
 	};
 
-	BinarySearchTree() { root = NULL; }
+	class BFT : public Iterator {
+	public:
+		friend class BinarySearchTree;
+		BFT(Element_BST*);
+		bool hasnext() override;
+		int next() override;
+	private:
+		Element_BST* current;
+		Queue<Element_BST*>* queue;
+	};
+
+	BinarySearchTree() { root = NULL;}
 	~BinarySearchTree() = default;
 };
 
-Iterator* BinarySearchTree::create_dft_iterator() {
-	return new ListIterator(root);
+Iterator* BinarySearchTree::create_bft_iterator() {
+	BFT* new_bft = new BFT(root);
+	return new_bft;
 }
 
-BinarySearchTree::ListIterator::ListIterator(Element_BST* start) {
+BinarySearchTree::BFT::BFT(Element_BST* start) {
 	current = start;
+	queue = new Queue<Element_BST*>();
 }
 
-int BinarySearchTree::ListIterator::next() {
+int BinarySearchTree::BFT::next() {
+	if (!hasnext())
+		throw out_of_range("No more elements in binary tree search.");
+	else {
+		int temp = current->data;
+		if (current->left != NULL)
+			queue->enQueue(current->left);
+		if (current->right != NULL)
+			queue->enQueue(current->right);
+		if (!queue->isEmpty())
+			current = queue->deQueue();
+		else
+			current = NULL;
+		return temp;
+	}
+}
+
+bool BinarySearchTree::BFT::hasnext() {
+	if (current != NULL)
+		return 1;
+	else
+		return 0;
+}
+
+Iterator* BinarySearchTree::create_dft_iterator() {
+	DFT* new_dft = new DFT(root);
+	return new_dft;
+}
+
+BinarySearchTree::DFT::DFT(Element_BST* start) {
+	current = start;
+	stack = new Stack<Element_BST*>();
+}
+
+int BinarySearchTree::DFT::next() {
 	if (!hasnext()) {
 		throw out_of_range("No more elements");
 	}
 	int current_data = current->data;
 
-	if (current->right != NULL)
-		stack->push(current->right->data);
+	if (current->right != NULL) {
+		stack->push(current->right);
+    }
 
 	if (current->left != NULL)
 		current = current->left;
 	else {
-		current->data = stack->peek();
-		stack->pop();
+		if (!stack->isEmpty())
+			current = stack->pop();
+		else
+			current = NULL;
 	}
 	return current_data;
 }
 
-bool BinarySearchTree::ListIterator::hasnext() {
+bool BinarySearchTree::DFT::hasnext() {
 	if (current != NULL)
 		return 1;
 	else

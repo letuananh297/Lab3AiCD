@@ -1,2 +1,3 @@
 ﻿  main.cpp
+D:\Второй курс (1)\АиСД\Lab3\BinarySearchTree.h(60): warning C4715: 'BinarySearchTree::contains': not all control paths return a value
   Lab3.vcxproj -> D:\Второй курс (1)\АиСД\Lab3\Debug\Lab3.exe

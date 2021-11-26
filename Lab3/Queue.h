@@ -3,24 +3,21 @@
 
 using namespace std;
 
+template<class T>
 class Queue {
 private:
 	class Element_Queue {
 	public:
-		int data;
+		T data;
 		Element_Queue* next;
 	};
 
-public:
 	Element_Queue* front;
 	Element_Queue* rear;
 	size_t size;
 
-	int getQueue() {
-		return front->data;
-	}
-
-	void enQueue(int x) {
+public:
+	void enQueue(T x) {
 		Element_Queue* Node = new Element_Queue;
 		Node->data = x;
 		Node->next = NULL;
@@ -29,21 +26,31 @@ public:
 			front = Node;
 		}
 		else {
+			if (front->next == NULL)
+				front->next = Node;
 			rear->next = Node;
 			rear = Node;
 		}
 		size++;
 	}
 
-	void deQueue() {
+	T deQueue() {
 		if (isEmpty())
 			throw runtime_error("Stack is empty.");
 		else {
 			Element_Queue* temporary = front;
-			front = temporary->next;
+			if (temporary->next == NULL) {
+				front = NULL;
+				rear = NULL;
+			}
+			else
+				front = front->next;
+
+			T value = temporary->data;
 			delete temporary;
+			size--;
+			return value;
 		}
-		size--;
 	}
 
 	size_t getsize() { return size; }

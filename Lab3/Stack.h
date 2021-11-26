@@ -1,32 +1,25 @@
 #pragma once
 #include <iostream>
-#include "BinarySearchTree.h"
 
 using namespace std;
 
+template<class T>
 class Stack {
 private:
 	class Element_Stack {
 	public:
-		int data;
+		T data;
 		Element_Stack* next;
 	};
 	Element_Stack* top;
 	size_t size;
 
 public:
-
-	/*void push(Element_BST* element_bst) {
-		Element_Stack* NewNode = new Element_Stack;
-		NewNode->data = element_bst->data;
-		NewNode->next = top;
-		top = NewNode;
-	}
-	*/
-	void push (int x) {
+	void push (T x) {
 		if (isEmpty()) {
 			Element_Stack* Node = new Element_Stack;
 			Node->data = x;
+			Node->next = NULL;
 			top = Node;
 		}
 		else {
@@ -38,24 +31,20 @@ public:
 		size++;
 	}
 
-	int pop() {
+	T pop() {
 		if (isEmpty())
 			throw runtime_error("Stack is empty.");
 		else {
 			Element_Stack* temporary = top;
-			top = temporary->next;
-			int popped = temporary->data;
-			free (temporary);
+			if (top->next == NULL)
+				top = NULL;
+			else
+				top = temporary->next;
+			T popped = temporary->data;
+			delete temporary;
 			size--;
 			return popped;
 		}
-	}
-
-	int peek() {
-		if (isEmpty())
-			throw runtime_error("Stack is empty.");
-		else
-			return top->data;
 	}
 
 	bool isEmpty() {

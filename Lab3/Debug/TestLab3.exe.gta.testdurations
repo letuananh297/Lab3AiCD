@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GtaTestDurations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Executable>D:\Второй курс (1)\АиСД\Lab3\Debug\TestLab3.exe</Executable>
+  <TestDurations>
+    <TestDuration Test="Test_BinarySearchTree.Test_insert" Duration="1" />
+    <TestDuration Test="Test_BinarySearchTree.Test_contains" Duration="1" />
+    <TestDuration Test="Test_BinarySearchTree.Test_remove" Duration="1" />
+    <TestDuration Test="Test_BinarySearchTree.Test_BreadthFirstTraversal" Duration="1" />
+    <TestDuration Test="Test_BinarySearchTree.Test_DepthFirstTraversal" Duration="1" />
+    <TestDuration Test="Test_Stack.Test_isEmpty" Duration="1" />
+    <TestDuration Test="Test_Stack.Test_getsize" Duration="1" />
+    <TestDuration Test="Test_Stack.Test_push" Duration="1" />
+    <TestDuration Test="Test_Stack.Test_pop" Duration="1" />
+    <TestDuration Test="Test_Queue.Test_isEmpty" Duration="1" />
+    <TestDuration Test="Test_Queue.Test_getsize" Duration="1" />
+    <TestDuration Test="Test_Queue.Test_enQueue" Duration="1" />
+    <TestDuration Test="Test_Queue.Test_pop" Duration="8" />
+    <TestDuration Test="Test_Queue.Test_deQueue" Duration="1" />
+  </TestDurations>
+</GtaTestDurations>
